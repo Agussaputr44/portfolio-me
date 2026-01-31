@@ -1,0 +1,70 @@
+tags:
+  name: Projects
+  description: Manajemen Data Portfolio
+
+paths:
+  /api/projects:
+    get:
+      summary: Ambil semua data project
+      tags: [Projects]
+      responses:
+        200:
+          description: Berhasil mengambil list project
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Project' 
+                      # ^-- Keren kan? Kita panggil schema dari components.yaml
+    
+    post:
+      summary: Upload project baru
+      tags: [Projects]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - title
+                - techStack
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                techStack:
+                  type: string
+                  description: 'Pisahkan dengan koma (Contoh: "React, Express")'
+                repoUrl:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+                  description: File gambar untuk dicover
+      responses:
+        201:
+          description: Project berhasil dibuat
+
+  /api/projects/{id}:
+    get:
+      summary: Detail satu project
+      tags: [Projects]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Detail ditemukan
+        404:
+          description: Project tidak ditemukan

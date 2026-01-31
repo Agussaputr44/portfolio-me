@@ -1,0 +1,23 @@
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID unik dari Supabase
+        title:
+          type: string
+          description: Nama Project
+        description:
+          type: string
+        tech_stack:
+          type: array
+          items:
+            type: string
+          example: ["Flutter", "Python", "Supabase"]
+        repo_url:
+          type: string
+        image_url:
+          type: string

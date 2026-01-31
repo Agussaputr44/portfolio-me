@@ -1,0 +1,12 @@
+tags:
+  name: GitHub
+  description: Integrasi API GitHub GraphQL
+
+paths:
+  /api/github/contributions:
+    get:
+      summary: Ambil data kontribusi (kotak hijau)
+      tags: [GitHub]
+      responses:
+        200:
+          description: Data berhasil diambil dari GitHub

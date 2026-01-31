@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    // 1. Setup Dasar (PENTING)
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "target": "es2016",
+    "module": "commonjs",           
+    "moduleResolution": "node",     
+    "esModuleInterop": true,        
+    
+    "verbatimModuleSyntax": false,  
+    
+    "strict": true,
+    "skipLibCheck": true,           
+    "forceConsistentCasingInFileNames": true
+  }
+}
