@@ -31,7 +31,7 @@ export const Services = () => {
         <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
           How I Can Help
         </h2>
-        <p className="text-slate-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="text-slate-600 dark:text-gray-400 max-w-2xl font-mono mx-auto">
           Bridging technical engineering with product strategy to deliver scalable digital solutions.
         </p>
       </div>

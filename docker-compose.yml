@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # === BACKEND SERVICE ===
+  server:
+    build: ./server
+    container_name: portfolio-server
+    restart: always
+    ports:
+      - "5000:5000" # Mapping port (Host:Container)
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+
+  # === FRONTEND SERVICE ===
+  client:
+    build: ./client
+    container_name: portfolio-client
+    restart: always
+    ports:
+      - "80:80" 
+    depends_on:
+      - server 

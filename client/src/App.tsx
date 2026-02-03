@@ -3,14 +3,16 @@ import { motion } from 'framer-motion';
 import { MapPin, Terminal, User, Download, ArrowRight, ChevronDown } from 'lucide-react';
 import { Navbar } from './components/Navbar';
 
+// Lazy Load Components
 const LiquidBackground = lazy(() => import('./components/LiquidBackground').then(m => ({ default: m.LiquidBackground })));
 const TechStack = lazy(() => import('./components/TechStack').then(m => ({ default: m.TechStack })));
 const Services = lazy(() => import('./components/Services').then(m => ({ default: m.Services }))); 
 const Resume = lazy(() => import('./components/Resume').then(m => ({ default: m.Resume })));
 const Certifications = lazy(() => import('./components/Certifications').then(m => ({ default: m.Certifications })));
-const About = lazy(() => import('./components/AboutMe').then(m => ({ default: m.About })));
+const About = lazy(() => import('./components/AboutMe').then(m => ({ default: m.About }))); 
 const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
 const Projects = lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
+
 const LoadingSection = () => (
   <div className="py-20 flex justify-center items-center opacity-50">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 dark:border-white"></div>
@@ -18,9 +20,23 @@ const LoadingSection = () => (
 );
 
 function App() {
+  // Logic Download CV
+  const handleDownloadCV = () => {
+    const link = document.createElement('a');
+    link.href = '/cv_agus_saputra.pdf'; // Pastikan file ada di folder public
+    link.download = 'CV_Agus_Saputra.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <div className="relative min-h-screen font-sans selection:bg-purple-500/30 transition-colors duration-500 bg-slate-50 dark:bg-[#050505]">
+    // PERBAIKAN DI SINI:
+    // Saya hapus "bg-slate-50 dark:bg-[#050505]" agar background jadi transparan
+    // sehingga LiquidBackground di belakangnya bisa terlihat.
+    <div className="relative min-h-screen font-sans selection:bg-purple-500/30 transition-colors duration-500">
       
+      {/* Background Animasi (Layer Paling Belakang) */}
       <Suspense fallback={null}>
         <LiquidBackground />
       </Suspense>
@@ -96,9 +112,11 @@ function App() {
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <button className="group relative flex items-center gap-3 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl
-                               bg-slate-900 text-white hover:bg-slate-800
-                               dark:bg-white dark:text-black dark:hover:bg-gray-200">
+            <button 
+              onClick={handleDownloadCV}
+              className="group relative flex items-center gap-3 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl
+                         bg-slate-900 text-white hover:bg-slate-800
+                         dark:bg-white dark:text-black dark:hover:bg-gray-200">
               <Download size={20} className="group-hover:-translate-y-1 transition-transform" /> 
               <span>Download CV</span>
             </button>
