@@ -11,7 +11,6 @@ export const LiquidBackground = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      // Offset dikurangi karena ukuran blob mengecil (biar tetap tengah)
       mouseX.set(e.clientX - 150);
       mouseY.set(e.clientY - 150);
     };
@@ -26,7 +25,6 @@ export const LiquidBackground = () => {
       {/* 1. CURSOR FOLLOWER (Lebih Kecil & Tajam) */}
       <motion.div
         style={{ x: springX, y: springY }}
-        // Ukuran dikecilkan jadi 300px (tadinya 500px)
         className="absolute w-[300px] h-[300px] bg-purple-600/30 rounded-full blur-[80px] opacity-60"
       />
 

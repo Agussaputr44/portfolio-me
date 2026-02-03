@@ -9,6 +9,7 @@ const TechStack = lazy(() => import('./components/TechStack').then(m => ({ defau
 const Services = lazy(() => import('./components/Services').then(m => ({ default: m.Services }))); 
 const Resume = lazy(() => import('./components/Resume').then(m => ({ default: m.Resume })));
 const Certifications = lazy(() => import('./components/Certifications').then(m => ({ default: m.Certifications })));
+// Pastikan nama file kamu benar 'About.tsx' atau 'AboutMe.tsx'? Sesuaikan path-nya!
 const About = lazy(() => import('./components/AboutMe').then(m => ({ default: m.About }))); 
 const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
 const Projects = lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
@@ -20,10 +21,9 @@ const LoadingSection = () => (
 );
 
 function App() {
-  // Logic Download CV
   const handleDownloadCV = () => {
     const link = document.createElement('a');
-    link.href = '/cv_agus_saputra.pdf'; // Pastikan file ada di folder public
+    link.href = '/cv_agus_saputra.pdf';
     link.download = 'CV_Agus_Saputra.pdf';
     document.body.appendChild(link);
     link.click();
@@ -31,12 +31,8 @@ function App() {
   };
 
   return (
-    // PERBAIKAN DI SINI:
-    // Saya hapus "bg-slate-50 dark:bg-[#050505]" agar background jadi transparan
-    // sehingga LiquidBackground di belakangnya bisa terlihat.
     <div className="relative min-h-screen font-sans selection:bg-purple-500/30 transition-colors duration-500">
       
-      {/* Background Animasi (Layer Paling Belakang) */}
       <Suspense fallback={null}>
         <LiquidBackground />
       </Suspense>
@@ -46,9 +42,9 @@ function App() {
       <main className="relative max-w-6xl mx-auto px-6">
         
         {/* === HERO SECTION === */}
+        {/* Idealnya dipisah jadi <Hero /> tapi begini juga oke */}
         <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center pt-20 relative">
           
-           {/* Badge Status */}
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -150,9 +146,9 @@ function App() {
           <TechStack />
         </Suspense>
 
-        {/* 3. Services (What I Do) */}
+        {/* 3. PROJECTS (Featured Work) */}
         <Suspense fallback={<LoadingSection />}>
-          <Services />
+          <Projects />
         </Suspense>
 
         {/* 4. RESUME (Experience & Education) */}
@@ -165,12 +161,12 @@ function App() {
           <Certifications />
         </Suspense>
 
-        {/* 6. PROJECTS (Featured Work)  */}
+        {/* 6. Services (What I Do) - SAYA TURUNKAN */}
         <Suspense fallback={<LoadingSection />}>
-          <Projects />
+          <Services />
         </Suspense>
 
-        {/* 7. FOOTER  */}
+        {/* 7. FOOTER */}
         <Suspense fallback={<LoadingSection />}>
           <Footer />
         </Suspense>
