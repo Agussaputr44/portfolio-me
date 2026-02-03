@@ -1,34 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-
 @import "tailwindcss";
 
-:root {
-  color-scheme: dark;
-}
 
 @theme {
-  /* Mengganti font default "sans" menjadi JetBrains Mono */
-  /* Jadi class 'font-sans' atau text biasa otomatis pakai font ini */
   --font-sans: "JetBrains Mono", monospace;
 }
 
 body {
-  background-color: #050505;
-  color: #e2e8f0;
-  font-family: "JetBrains Mono", monospace; 
+  @apply transition-colors duration-500 ease-in-out;
+  font-family: "JetBrains Mono", monospace;
   overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
+/* Scrollbar Custom */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #050505;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #555;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #777;
 }

@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { 
   SiFlutter, SiDart, SiLaravel, SiPhp, SiPython, 
   SiReact, SiTypescript, SiTailwindcss, SiDocker, 
-  SiSupabase, SiGit, SiFigma 
+  SiSupabase, SiGit, SiFigma, SiFirebase // Import Firebase
 } from "react-icons/si";
 
-// Definisi Data Icon dengan Warna Aslinya
+// Tambahkan Firebase ke list
 const techs = [
   { name: "Flutter", icon: <SiFlutter className="text-cyan-400 drop-shadow-[0_0_15px_rgba(34,211,238,0.8)]" /> },
   { name: "Dart", icon: <SiDart className="text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.8)]" /> },
@@ -17,12 +17,11 @@ const techs = [
   { name: "Tailwind", icon: <SiTailwindcss className="text-teal-300 drop-shadow-[0_0_15px_rgba(94,234,212,0.8)]" /> },
   { name: "Docker", icon: <SiDocker className="text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.8)]" /> },
   { name: "Supabase", icon: <SiSupabase className="text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.8)]" /> },
+  { name: "Firebase", icon: <SiFirebase className="text-yellow-500 drop-shadow-[0_0_15px_rgba(234,179,8,0.8)]" /> }, // Firebase Added
   { name: "Git", icon: <SiGit className="text-orange-500 drop-shadow-[0_0_15px_rgba(249,115,22,0.8)]" /> },
   { name: "Figma", icon: <SiFigma className="text-pink-400 drop-shadow-[0_0_15px_rgba(244,114,182,0.8)]" /> },
 ];
 
-// Komponen Helper biar kodingan gak duplikat
-// Menerima prop 'isColored' untuk menentukan mode B/W atau Warna
 const MarqueeContent = ({ isColored = false }: { isColored?: boolean }) => (
   <motion.div
     className="flex gap-16 whitespace-nowrap px-10"
@@ -30,13 +29,13 @@ const MarqueeContent = ({ isColored = false }: { isColored?: boolean }) => (
     transition={{
       repeat: Infinity,
       ease: "linear",
-      duration: 30, // Kecepatan harus SAMA PERSIS antara dua layer
+      duration: 30, 
     }}
   >
     {[...techs, ...techs, ...techs].map((tech, index) => (
       <div key={index} className="flex flex-col items-center gap-4 w-20">
         <span className={`text-5xl transition-all duration-300 
-          ${isColored ? 'opacity-100 scale-110' : 'opacity-20 grayscale scale-90'}`
+          ${isColored ? 'opacity-100 scale-110' : 'opacity-20 grayscale scale-90 dark:opacity-20'}`
         }>
           {tech.icon}
         </span>
@@ -49,32 +48,29 @@ export const TechStack = () => {
   return (
     <section className="py-24 overflow-hidden relative z-10">
       <div className="text-center mb-16">
-        <h2 className="text-2xl font-bold text-white mb-2 tracking-wide">The Arsenal</h2>
-        <p className="text-gray-500 text-sm font-mono">Tools & Technologies</p>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 tracking-wide transition-colors">
+          The Arsenal
+        </h2>
+        <p className="text-slate-500 dark:text-gray-500 text-sm font-mono">
+          Tools & Technologies
+        </p>
       </div>
 
       <div className="relative flex w-full h-32 items-center justify-center overflow-hidden">
         
-        {/* === LAYER 1: BASE (HITAM PUTIH) === */}
-        {/* Layer ini terlihat di pinggir kiri & kanan */}
         <div className="absolute inset-0 z-10 flex items-center">
           <MarqueeContent isColored={false} />
         </div>
 
-        {/* === LAYER 2: OVERLAY (BERWARNA) === */}
-        {/* Layer ini ditumpuk di atas, TAPI kita potong (masking) pinggirnya */}
-        {/* Jadi warna aslinya cuma bocor di tengah doang */}
-       <div 
-  className="absolute inset-0 z-20 flex items-center"
-  style={{
-    // Masking Lebih Sempit (Sniper Focus):
-    // Kiri Transparan (0-40%) -> Fade In (40-48%) -> Tengah Jelas (48-52%) -> Fade Out (52-60%) -> Kanan Transparan
-    maskImage: "linear-gradient(90deg, transparent 0%, transparent 40%, black 48%, black 52%, transparent 60%, transparent 100%)",
-    WebkitMaskImage: "linear-gradient(90deg, transparent 0%, transparent 40%, black 48%, black 52%, transparent 60%, transparent 100%)"
-  }}
->
-  <MarqueeContent isColored={true} />
-</div>
+        <div 
+          className="absolute inset-0 z-20 flex items-center"
+          style={{
+            maskImage: "linear-gradient(90deg, transparent 0%, transparent 40%, black 48%, black 52%, transparent 60%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, transparent 40%, black 48%, black 52%, transparent 60%, transparent 100%)"
+          }}
+        >
+          <MarqueeContent isColored={true} />
+        </div>
 
       </div>
     </section>

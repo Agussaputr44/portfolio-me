@@ -6,7 +6,7 @@ const experiences = [
     id: 1,
     role: "Google Student Ambassador",
     company: "Google",
-    date: "2024 - Present",
+    date: "2025 - Present",
     desc: "Community Leadership & Tech Evangelism. Memimpin komunitas developer kampus dan mengadakan workshop teknologi.",
     icon: <Briefcase size={18} />,
   },
@@ -20,7 +20,7 @@ const experiences = [
   },
   {
     id: 3,
-    role: "Staff HRD (Kaderisasi)",
+    role: "Staff Kaderisasi",
     company: "Himpunan Mahasiswa TI",
     date: "2023 - 2024",
     desc: "Mengelola pengembangan soft-skill anggota baru dan manajemen talenta organisasi.",
@@ -40,7 +40,6 @@ export const Experience = () => {
   return (
     <section id="experience" className="py-24 relative z-10 scroll-mt-20">
       <div className="text-center mb-16">
-         {/* Judul juga kita kasih animasi dikit biar sopan */}
          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -53,7 +52,6 @@ export const Experience = () => {
       </div>
       
       <div className="relative max-w-4xl mx-auto space-y-8">
-        {/* Garis Vertikal Tengah (Animasi memanjang) */}
         <motion.div 
           initial={{ height: 0 }}
           whileInView={{ height: "100%" }}
@@ -65,15 +63,13 @@ export const Experience = () => {
         {experiences.map((exp, index) => (
           <motion.div 
             key={exp.id} 
-            // ANIMASI UTAMA: Fade In + Slide Up
             initial={{ opacity: 0, y: 50 }} 
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }} // margin -100px biar animasinya mulai pas elemen udah agak naik dikit
-            transition={{ duration: 0.6, delay: index * 0.2 }} // Ada delay bertahap biar ga muncul barengan
+            viewport={{ once: true, margin: "-100px" }} 
+            transition={{ duration: 0.6, delay: index * 0.2 }} 
             className={`relative flex items-start gap-8 md:gap-0 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
           >
             
-            {/* Ikon Bulat di Tengah (Efek Pop Up) */}
             <motion.div 
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
@@ -83,10 +79,8 @@ export const Experience = () => {
               {exp.icon}
             </motion.div>
 
-            {/* Spacer Kosong */}
             <div className="hidden md:block w-1/2" />
 
-            {/* Konten Kartu */}
             <div className="flex-1 ml-12 md:ml-0 md:px-12">
               <div className="p-6 rounded-2xl bg-white/5 border border-white/5 backdrop-blur-sm hover:border-purple-500/30 hover:bg-white/10 transition-all duration-300 group hover:-translate-y-1 shadow-lg">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-2 gap-2">
