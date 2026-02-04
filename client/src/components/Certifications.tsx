@@ -61,7 +61,7 @@ const certs = [
 
 export const Certifications = () => {
     return (
-        <section id="certifications" className="py-24 bg-slate-100 dark:bg-white/5 scroll-mt-20">
+        <section id="certifications" className="py-24 bg-slate-100 dark:bg-white/5 scroll-mt-20 rounded-2xl">
             <div className="max-w-6xl mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
                     <div>

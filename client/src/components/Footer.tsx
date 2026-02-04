@@ -15,8 +15,8 @@ export const Footer = () => {
         href="mailto:agusptr44@gmail.com" 
         className="group relative inline-block text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-cyan-600 dark:from-purple-400 dark:to-cyan-400 hover:text-slate-900 dark:hover:text-white transition-colors duration-300"
       >
-        agusptr44@gmail.com
-        <span className="absolute -bottom-2 left-0 w-0 h-[2px] bg-gradient-to-r from-purple-600 to-cyan-600 group-hover:w-full transition-all duration-300"></span>
+        agussaputra.dev@gmail.com
+        <span className="my-2  absolute -bottom-2 left-0 w-0 h-[2px] bg-gradient-to-r from-purple-600 to-cyan-600 group-hover:w-full transition-all duration-300"></span>
       </a>
       
       {/* Bottom Footer */}

@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Terminal, User, Download, ArrowRight, ChevronDown } from 'lucide-react';
 import { Navbar } from './components/Navbar';
@@ -6,13 +6,13 @@ import { Navbar } from './components/Navbar';
 // Lazy Load Components
 const LiquidBackground = lazy(() => import('./components/LiquidBackground').then(m => ({ default: m.LiquidBackground })));
 const TechStack = lazy(() => import('./components/TechStack').then(m => ({ default: m.TechStack })));
-const Services = lazy(() => import('./components/Services').then(m => ({ default: m.Services }))); 
+const Services = lazy(() => import('./components/Services').then(m => ({ default: m.Services })));
 const Resume = lazy(() => import('./components/Resume').then(m => ({ default: m.Resume })));
 const Certifications = lazy(() => import('./components/Certifications').then(m => ({ default: m.Certifications })));
-// Pastikan nama file kamu benar 'About.tsx' atau 'AboutMe.tsx'? Sesuaikan path-nya!
-const About = lazy(() => import('./components/AboutMe').then(m => ({ default: m.About }))); 
+const About = lazy(() => import('./components/AboutMe').then(m => ({ default: m.About })));
 const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.Footer })));
 const Projects = lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
+const Analytics = lazy(() => import('./components/Analytics').then(m => ({ default: m.Analytics })))
 
 const LoadingSection = () => (
   <div className="py-20 flex justify-center items-center opacity-50">
@@ -30,22 +30,30 @@ function App() {
     document.body.removeChild(link);
   };
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = import.meta.env.VITE_UMAMI_SCRIPT_URL || '';
+    script.async = true;
+    script.setAttribute('data-website-id', import.meta.env.VITE_UMAMI_ID || '');
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="relative min-h-screen font-sans selection:bg-purple-500/30 transition-colors duration-500">
-      
+
       <Suspense fallback={null}>
         <LiquidBackground />
       </Suspense>
-      
+
       <Navbar />
 
       <main className="relative max-w-6xl mx-auto px-6">
-        
+
         {/* === HERO SECTION === */}
         {/* Idealnya dipisah jadi <Hero /> tapi begini juga oke */}
         <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center pt-20 relative">
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border 
@@ -62,16 +70,16 @@ function App() {
             </span>
           </motion.div>
 
-          <motion.h1 
+          <motion.h1
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             className="text-6xl md:text-9xl font-black mb-6 tracking-tighter text-slate-900 dark:text-white"
           >
-             Agus Saputra
+            Agus Saputra
             <span className="text-purple-600 dark:text-purple-500">.</span>
           </motion.h1>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
@@ -93,7 +101,7 @@ function App() {
             </div>
           </motion.div>
 
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
@@ -102,22 +110,22 @@ function App() {
             Engineering <span className="font-semibold text-slate-900 dark:text-white border-b-2 border-purple-500/30">scalable solutions</span> with precision & <span className="font-semibold text-slate-900 dark:text-white border-b-2 border-cyan-500/30">user-centric</span> design.
           </motion.p>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <button 
+            <button
               onClick={handleDownloadCV}
               className="group relative flex items-center gap-3 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-xl
                          bg-slate-900 text-white hover:bg-slate-800
                          dark:bg-white dark:text-black dark:hover:bg-gray-200">
-              <Download size={20} className="group-hover:-translate-y-1 transition-transform" /> 
+              <Download size={20} className="group-hover:-translate-y-1 transition-transform" />
               <span>Download CV</span>
             </button>
-            
-            <button 
+
+            <button
               onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
               className="group flex items-center gap-2 px-8 py-3 rounded-full font-medium transition-all backdrop-blur-md border
                          bg-white/50 border-slate-200 text-slate-900 hover:bg-white/80
@@ -126,8 +134,8 @@ function App() {
               View Work <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
             className="absolute bottom-10 text-slate-400 dark:text-gray-600"
@@ -166,10 +174,17 @@ function App() {
           <Services />
         </Suspense>
 
-        {/* 7. FOOTER */}
+        {/*7. ANALYTICS*/}
+        <Suspense fallback={<LoadingSection />}>
+          <Analytics />
+        </Suspense>
+        
+        {/* 8. FOOTER */}
         <Suspense fallback={<LoadingSection />}>
           <Footer />
         </Suspense>
+
+
 
       </main>
     </div>

@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="120" fill="#0a0a0a"/>
+  
+  <path d="M110 160 L210 256 L110 352" stroke="#A855F7" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <text x="240" y="370" font-family="monospace" font-weight="bold" font-size="280" fill="white">A</text>
+  
+  <rect x="410" y="320" width="60" height="15" fill="#06B6D4">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite" />
+  </rect>
+</svg>
