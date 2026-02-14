@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Terminal, User, Download, ArrowRight, ChevronDown, Command } from 'lucide-react';
 import { Navbar } from './components/Navbar';
@@ -23,28 +23,52 @@ const LoadingSection = () => (
 function App() {
   const [showShortcutHint, setShowShortcutHint] = useState(true);
 
-  const handleDownloadCV = () => {
+  // Gunakan useCallback agar fungsi tetap stabil saat dipanggil di useEffect
+  const handleDownloadCV = useCallback(() => {
     const link = document.createElement('a');
     link.href = '/cv_agus_saputra.pdf';
     link.download = 'CV_Agus_Saputra.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // INTERACTIVE FEATURE: Keyboard Shortcuts
+  // INTERACTIVE FEATURE: Perbaikan Shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Pastikan shortcut tidak aktif saat user sedang mengetik di input atau textarea
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
       const key = e.key.toLowerCase();
-      if (key === 'p') document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-      if (key === 'a') document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-      if (key === 'c') handleDownloadCV();
-      if (key === 'h') setShowShortcutHint(prev => !prev);
+      
+      switch (key) {
+        case 'p':
+          scrollToSection('projects');
+          break;
+        case 'a':
+          scrollToSection('about');
+          break;
+        case 'c':
+          scrollToSection('footer'); // Get in touch / Contact
+          break;
+        case 'd':
+          handleDownloadCV(); // Download CV
+          break;
+        case 'h':
+          setShowShortcutHint(prev => !prev); // Toggle hint
+          break;
+        default:
+          break;
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleDownloadCV]);
 
   return (
     <div className="relative min-h-screen font-sans selection:bg-purple-500/30 transition-colors duration-500 selection:text-white">
@@ -55,22 +79,36 @@ function App() {
 
       <Navbar />
 
-      {/* SHORTCUT HINT OVERLAY */}
+      {/* SHORTCUT HINT OVERLAY - Diperbarui agar sesuai logika baru */}
       <AnimatePresence>
         {showShortcutHint && (
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className="fixed bottom-10 right-10 z-[60] hidden lg:flex flex-col gap-2 p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl pointer-events-none"
+            className="fixed bottom-10 right-10 z-[60] hidden lg:flex flex-col gap-2 p-5 bg-white/10 dark:bg-black/40 backdrop-blur-xl border border-white/20 rounded-3xl shadow-2xl pointer-events-none"
           >
             <div className="flex items-center gap-2 mb-2 text-purple-400 font-bold text-xs uppercase tracking-widest">
               <Command size={14} /> Quick Navigation
             </div>
-            <div className="text-[10px] text-gray-400 space-y-1">
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-white">P</kbd> Go to Projects</p>
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-white">A</kbd> Go to About</p>
-              <p><kbd className="bg-white/20 px-1.5 py-0.5 rounded text-white">C</kbd> Download CV</p>
+            <div className="text-[10px] text-gray-400 space-y-2">
+              <p className="flex items-center gap-3">
+                <kbd className="bg-white/20 min-w-[20px] text-center px-1.5 py-0.5 rounded text-white font-mono">P</kbd> 
+                <span>Go to Projects</span>
+              </p>
+              <p className="flex items-center gap-3">
+                <kbd className="bg-white/20 min-w-[20px] text-center px-1.5 py-0.5 rounded text-white font-mono">A</kbd> 
+                <span>Go to About</span>
+              </p>
+              <p className="flex items-center gap-3">
+                <kbd className="bg-white/20 min-w-[20px] text-center px-1.5 py-0.5 rounded text-white font-mono">C</kbd> 
+                <span>Get in touch</span>
+              </p>
+              <p className="flex items-center gap-3">
+                <kbd className="bg-white/20 min-w-[20px] text-center px-1.5 py-0.5 rounded text-white font-mono">D</kbd> 
+                <span>Download CV</span>
+              </p>
+              <div className="pt-1 opacity-50 italic">Press 'H' to hide this</div>
             </div>
           </motion.div>
         )}
@@ -107,17 +145,17 @@ function App() {
             transition={{ delay: 0.3 }}
             className="flex flex-wrap justify-center items-center gap-4 md:gap-8 text-sm md:text-base font-mono mb-10 text-slate-600 dark:text-gray-400"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
               <MapPin size={16} className="text-purple-600 dark:text-purple-400" />
               <span>Bengkalis, ID</span>
             </div>
             <div className="hidden md:block w-[1px] h-4 bg-slate-300 dark:bg-white/10"></div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
               <Terminal size={16} className="text-cyan-600 dark:text-cyan-400" />
               <span>Mobile & Backend Dev</span>
             </div>
             <div className="hidden md:block w-[1px] h-4 bg-slate-300 dark:bg-white/10"></div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
               <User size={16} className="text-pink-600 dark:text-pink-400" />
               <span>Google Student Ambassador</span>
             </div>
@@ -151,8 +189,8 @@ function App() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group flex items-center gap-2 px-8 py-3 rounded-full font-medium transition-all backdrop-blur-md border bg-white/50 border-slate-200 text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-white"
+              onClick={() => scrollToSection('projects')}
+              className="group flex items-center gap-2 px-8 py-3 rounded-full font-medium transition-all backdrop-blur-md border bg-white/50 border-slate-200 text-slate-900 dark:bg-white/5 dark:border-white/10 dark:text-white hover:bg-white/80 dark:hover:bg-white/10"
             >
               View Work <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </motion.button>
@@ -183,7 +221,7 @@ function App() {
 }
 
 const SectionWrapper = ({ children, id }: { children: React.ReactNode, id: string }) => (
-  <section id={id} className="scroll-mt-20">
+  <section id={id} className="scroll-mt-24">
     <Suspense fallback={<LoadingSection />}>
       {children}
     </Suspense>
