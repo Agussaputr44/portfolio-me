@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Project, GithubData } from '../types';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://portfolio-500xkq5i4-agusptr44s-projects.vercel.app/api',
 });
 
 
