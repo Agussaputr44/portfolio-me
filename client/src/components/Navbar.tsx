@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { 
   Home, User, Cpu, FolderGit2, Briefcase, 
-  ScrollText, Wand2, BarChart3 
+  ScrollText, Wand2, BarChart3, Menu, X 
 } from "lucide-react";
 
 export const Navbar = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
     { id: "home", icon: <Home size={18} />, label: "Home" },
@@ -39,16 +40,19 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleNavClick = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setIsOpen(false);
+  };
+
   return (
-    <div className="fixed top-8 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
+    <div className="fixed top-6 sm:top-8 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
       <LayoutGroup>
+        {/* DESKTOP NAVBAR */}
         <motion.nav
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
           className={`
-            flex items-center gap-1 p-1.5 pointer-events-auto
-            transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]
-            rounded-[24px] border border-white/20
+            hidden md:flex items-center gap-1 p-1.5 pointer-events-auto
+            rounded-[24px] border border-white/20 transition-all duration-700
             ${scrolled 
               ? "bg-[#f5f5f7]/40 dark:bg-[#1d1d1f]/40 backdrop-blur-[25px] backdrop-saturate-[1.8] shadow-[0_12px_40px_-12px_rgba(0,0,0,0.15)]" 
               : "bg-white/10 dark:bg-black/10 backdrop-blur-md border-white/5"}
@@ -57,17 +61,14 @@ export const Navbar = () => {
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
             const isHovered = hoveredSection === item.id;
-            const showLabel = isActive || isHovered;
-
             return (
               <button
                 key={item.id}
                 onMouseEnter={() => setHoveredSection(item.id)}
                 onMouseLeave={() => setHoveredSection(null)}
-                onClick={() => document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" })}
+                onClick={() => handleNavClick(item.id)}
                 className="relative flex items-center h-10 px-4 rounded-[18px] transition-all duration-300 outline-none"
               >
-                {/* PIL AKTIF: Efek Kaca Abu-abu (Apple Style) */}
                 {isActive && (
                   <motion.div
                     layoutId="nav-glow"
@@ -75,30 +76,17 @@ export const Navbar = () => {
                     transition={{ type: "spring", stiffness: 350, damping: 30 }}
                   />
                 )}
-
-                {/* HOVER INDICATOR: Tipis & Halus */}
-                {isHovered && !isActive && (
-                  <motion.div
-                    layoutId="nav-hover"
-                    className="absolute inset-0 bg-gray-400/5 dark:bg-white/5 rounded-[18px]"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                  />
-                )}
-
                 <div className="relative z-10 flex items-center gap-2">
-                  <span className={`transition-colors duration-300 ${isActive ? "text-slate-900 dark:text-white" : "text-slate-500 dark:text-slate-500"}`}>
+                  <span className={`${isActive ? "text-slate-900 dark:text-white" : "text-slate-500"}`}>
                     {item.icon}
                   </span>
-
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    {showLabel && (
+                  <AnimatePresence mode="popLayout">
+                    {(isActive || isHovered) && (
                       <motion.span
                         initial={{ opacity: 0, scale: 0.9, x: -5 }}
                         animate={{ opacity: 1, scale: 1, x: 0 }}
                         exit={{ opacity: 0, scale: 0.9, x: -5 }}
-                        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-                        className={`text-[13px] font-semibold tracking-tight whitespace-nowrap
-                          ${isActive ? "text-slate-900 dark:text-white" : "text-slate-500"}`}
+                        className={`text-[13px] font-semibold tracking-tight ${isActive ? "text-slate-900 dark:text-white" : "text-slate-500"}`}
                       >
                         {item.label}
                       </motion.span>
@@ -109,6 +97,51 @@ export const Navbar = () => {
             );
           })}
         </motion.nav>
+
+        {/* MOBILE HAMBURGER BUTTON */}
+        <motion.div className="md:hidden flex justify-end w-full max-w-md pointer-events-auto">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-4 rounded-2xl bg-white/20 dark:bg-black/20 backdrop-blur-xl border border-white/20 shadow-xl text-slate-900 dark:text-white"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </motion.div>
+
+        {/* MOBILE MENU OVERLAY */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="absolute top-20 left-4 right-4 md:hidden pointer-events-auto
+                         bg-white/80 dark:bg-[#1d1d1f]/90 backdrop-blur-[30px] 
+                         border border-white/20 rounded-[32px] p-4 shadow-2xl"
+            >
+              <div className="grid grid-cols-2 gap-2">
+                {navItems.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`flex flex-col items-center justify-center gap-3 p-6 rounded-[24px] transition-all
+                                ${activeSection === item.id 
+                                  ? "bg-gray-500/10 dark:bg-white/10 border border-white/20" 
+                                  : "hover:bg-white/50 dark:hover:bg-white/5"}`}
+                  >
+                    <span className={activeSection === item.id ? "text-purple-500" : "text-slate-500"}>
+                      {item.icon}
+                    </span>
+                    <span className={`text-xs font-bold uppercase tracking-widest 
+                                    ${activeSection === item.id ? "text-slate-900 dark:text-white" : "text-slate-500"}`}>
+                      {item.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </LayoutGroup>
     </div>
   );
