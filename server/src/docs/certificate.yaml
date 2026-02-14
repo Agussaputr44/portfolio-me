@@ -1,0 +1,30 @@
+/certificates:
+  post:
+    tags: [Certificates]
+    summary: Tambah sertifikat & upload PDF
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              title: { type: string }
+              issuer: { type: string }
+              year: { type: string }
+              pdf_file: { type: string, format: binary }
+
+/certificates/{id}:
+  get:
+    tags: [Certificates]
+    summary: Ambil detail sertifikat berdasarkan ID
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: Berhasil mengambil detail
+      404:
+        description: Sertifikat tidak ditemukan

@@ -20,3 +20,14 @@ export const uploadProjectImage = async (file: Express.Multer.File): Promise<str
 
   return publicUrlData.publicUrl;
 };
+
+export const uploadToSupabase = async (file: Express.Multer.File, folder: string): Promise<string> => {
+  const fileName = `${Date.now()}-${file.originalname}`;
+  const filePath = `${folder}/${fileName}`;
+
+  const { error } = await supabase.storage.from('certificates').upload(filePath, file.buffer);
+  if (error) throw error;
+
+  const { data } = supabase.storage.from('certificates').getPublicUrl(filePath);
+  return data.publicUrl;
+};
