@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Award, ExternalLink, BadgeCheck, Loader2 } from "lucide-react";
 import { fetchCertificates } from "../services/api";
