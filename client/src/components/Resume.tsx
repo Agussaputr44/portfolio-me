@@ -12,7 +12,6 @@ const experienceData = [
     desc: "Collaborated with faculty on traffic monitoring research. Developed 'Bengkalis Traffic Intelligence' using YOLOv8 for real-time vehicle classification and FastAPI for high-performance data processing.",
     type: "Research"
   },
-  // PENGALAMAN PENGABDIAN MASYARAKAT (Berdasarkan Proyek POS UMKM kamu)
   {
     id: 6,
     role: "Community Service Tech Lead",
@@ -23,7 +22,7 @@ const experienceData = [
   },
   {
     id: 1,
-    role: "Campus Leader (Socialization Team)", // Diubah karena bukan GSA lagi agar tetap profesional
+    role: "Campus Leader (Socialization Team)", 
     company: "Developer Community",
     date: "Sep 2025 - Feb 2026", 
     desc: "Organized technical workshops and 'Gemini AI Socialization' events to bridge the gap between emerging Google technologies and university students.",

@@ -23,10 +23,11 @@ export const Certifications = () => {
     getCerts();
   }, []);
 
+  // fix import react never used
 
 
 
-  
+
   const getVariant = (id: number) => {
     const variants = [
       { color: "from-purple-600 to-indigo-600", bg: "1e1b4b", text: "a855f7" }, 

@@ -17,6 +17,7 @@ export default function Magnetic({children}: {children: React.ReactNode}) {
         setPosition({x: 0, y: 0})
     }
 
+    
     const { x, y } = position;
     return (
         <motion.div
