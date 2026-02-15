@@ -22,10 +22,17 @@ export const uploadProjectImage = async (file: Express.Multer.File): Promise<str
 };
 
 export const uploadToSupabase = async (file: Express.Multer.File, folder: string): Promise<string> => {
-  const fileName = `${Date.now()}-${file.originalname}`;
+  const fileName = `${Date.now()}-${file.originalname.replace(/\s/g, '-')}`;
   const filePath = `${folder}/${fileName}`;
 
-  const { error } = await supabase.storage.from('certificates').upload(filePath, file.buffer);
+  // Tambahkan opsi contentType seperti pada fungsi uploadProjectImage
+  const { error } = await supabase.storage
+    .from('certificates')
+    .upload(filePath, file.buffer, {
+      contentType: file.mimetype, // <--- TAMBAHKAN INI
+      upsert: false
+    });
+
   if (error) throw error;
 
   const { data } = supabase.storage.from('certificates').getPublicUrl(filePath);

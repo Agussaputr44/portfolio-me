@@ -3,7 +3,9 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import projectRoutes from './routes/project.routes';
-import githubRoutes from './routes/github.route';
+import githubRoutes from './routes/github.routes';
+import certificatesRoutes from './routes/certificate.routes';
+dotenv.config();
 import { swaggerSpec } from './utils/swagger';
 import swaggerUi from 'swagger-ui-express';
 const app = express();
@@ -23,7 +25,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/projects', projectRoutes);
 app.use('/api/github', githubRoutes);
-
+app.use('/api/certificates', certificatesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);

@@ -1,19 +1,24 @@
 import axios from 'axios';
-import { Project, GithubData } from '../types';
+import { Project, GithubData, Certificate, ApiResponse } from '../types';
 
 const api = axios.create({
-  baseURL: 'https://portfolio-500xkq5i4-agusptr44s-projects.vercel.app/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
 });
 
-
-// Function get Projects
+// GET Projects
 export const fetchProjects = async (): Promise<Project[]> => {
-  const { data } = await api.get('/projects');
+  const { data } = await api.get<ApiResponse<Project[]>>('/projects');
   return data.data; 
 };
 
-// Function get Github
+// GET Github Contributions
 export const fetchGithub = async (): Promise<GithubData> => {
-  const { data } = await api.get('/github/contributions');
+  const { data } = await api.get<ApiResponse<GithubData>>('/github/contributions');
+  return data.data;
+};
+
+// GET Certificates (Sekarang konsisten menggunakan instance 'api')
+export const fetchCertificates = async (): Promise<Certificate[]> => {
+  const { data } = await api.get<ApiResponse<Certificate[]>>('/certificates');
   return data.data;
 };

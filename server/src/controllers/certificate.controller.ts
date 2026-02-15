@@ -6,7 +6,7 @@ export const getCertificates = async (req: Request, res: Response) => {
   try {
     const data = await CertificateService.getAllCertificates();
     res.status(200).json({
-      status: 'success',
+      status: true,
       data
     });
   } catch (error: any) {
@@ -24,7 +24,7 @@ export const getDetailCertificate = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      status: 'success',
+      status: true,
       data
     });
   } catch (error: any) {
@@ -47,7 +47,7 @@ export const createCertificate = async (req: Request, res: Response) => {
     };
 
     const data = await CertificateService.addCertificate(payload);
-    res.status(201).json({ status: 'success', data });
+    res.status(201).json({ status: true, data });
   } catch (error: any) {
     res.status(500).json({ status: 'error', message: error.message });
   }

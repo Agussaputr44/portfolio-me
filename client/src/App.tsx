@@ -22,8 +22,16 @@ const LoadingSection = () => (
 
 function App() {
   const [showShortcutHint, setShowShortcutHint] = useState(true);
+  
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    else if (hour < 18) return "Good Afternoon";
+    else return "Good Evening";
+  };
+  
+  const [greeting] = useState(getGreeting());
 
-  // Gunakan useCallback agar fungsi tetap stabil saat dipanggil di useEffect
   const handleDownloadCV = useCallback(() => {
     const link = document.createElement('a');
     link.href = '/cv_agus_saputra.pdf';
@@ -37,10 +45,8 @@ function App() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // INTERACTIVE FEATURE: Perbaikan Shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Pastikan shortcut tidak aktif saat user sedang mengetik di input atau textarea
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 
       const key = e.key.toLowerCase();
@@ -53,13 +59,13 @@ function App() {
           scrollToSection('about');
           break;
         case 'c':
-          scrollToSection('footer'); // Get in touch / Contact
+          scrollToSection('footer');
           break;
         case 'd':
-          handleDownloadCV(); // Download CV
+          handleDownloadCV();
           break;
         case 'h':
-          setShowShortcutHint(prev => !prev); // Toggle hint
+          setShowShortcutHint(prev => !prev);
           break;
         default:
           break;
@@ -79,7 +85,7 @@ function App() {
 
       <Navbar />
 
-      {/* SHORTCUT HINT OVERLAY - Diperbarui agar sesuai logika baru */}
+      {/* SHORTCUT HINT OVERLAY */}
       <AnimatePresence>
         {showShortcutHint && (
           <motion.div 
@@ -119,18 +125,20 @@ function App() {
         {/* === HERO SECTION === */}
         <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center pt-20 relative">
           
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 mb-8 px-4 py-1.5 rounded-full border bg-white/50 border-gray-200 text-slate-700 dark:bg-white/5 dark:border-white/10 dark:text-emerald-100 backdrop-blur-md"
-          >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-[10px] md:text-xs font-bold tracking-widest uppercase">Available for Hire</span>
-          </motion.div>
-
+        <motion.div
+  initial={{ opacity: 0, y: -20 }}
+  animate={{ opacity: 1, y: 0 }}
+  className="group relative inline-flex items-center gap-3 mb-8 px-6 py-2 rounded-2xl border bg-white/40 border-cyan-200/50 text-slate-700 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-200 backdrop-blur-xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-500 overflow-hidden"
+>
+  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+  <span className="relative flex h-3 w-3">
+    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-600 dark:bg-cyan-400"></span>
+  </span>
+  <span className="relative text-[10px] md:text-xs font-mono tracking-[0.2em]">
+    {greeting}, I'm Agus
+  </span>
+</motion.div>
           <motion.h1
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -152,12 +160,12 @@ function App() {
             <div className="hidden md:block w-[1px] h-4 bg-slate-300 dark:bg-white/10"></div>
             <div className="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
               <Terminal size={16} className="text-cyan-600 dark:text-cyan-400" />
-              <span>Mobile & Backend Dev</span>
+              <span>Software Engineering Student</span>
             </div>
             <div className="hidden md:block w-[1px] h-4 bg-slate-300 dark:bg-white/10"></div>
             <div className="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-slate-100 dark:hover:bg-white/5 transition-colors">
               <User size={16} className="text-pink-600 dark:text-pink-400" />
-              <span>Google Student Ambassador</span>
+              <span>Mobile & Backend Dev</span>
             </div>
           </motion.div>
 

@@ -3,12 +3,30 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, GraduationCap, Calendar, MapPin, Building2 } from "lucide-react";
 
 const experienceData = [
+  // PENGALAMAN PENELITIAN (Berdasarkan Proyek YOLOv8 kamu)
+  {
+    id: 5,
+    role: "Research Assistant (Computer Vision)",
+    company: "Politeknik Negeri Bengkalis",
+    date: "Nov 2025 - Feb 2026",
+    desc: "Collaborated with faculty on traffic monitoring research. Developed 'Bengkalis Traffic Intelligence' using YOLOv8 for real-time vehicle classification and FastAPI for high-performance data processing.",
+    type: "Research"
+  },
+  // PENGALAMAN PENGABDIAN MASYARAKAT (Berdasarkan Proyek POS UMKM kamu)
+  {
+    id: 6,
+    role: "Community Service Tech Lead",
+    company: "Pusat Penelitian & Pengabdian Masyarakat (P3M)",
+    date: "Nov 2025",
+    desc: "Spearheaded the digital transformation for local SMEs by implementing a custom Point of Sales (POS) system. Integrated hardware components to streamline transaction workflows and inventory management.",
+    type: "Service"
+  },
   {
     id: 1,
-    role: "Google Student Ambassador",
-    company: "Google",
-    date: "Aug 2025 - Feb 2026", 
-    desc: "Selected as a campus leader to bridge the gap between Google technologies and university students. Organized 'Gemini AI Socialization' events and designed creative campaigns to promote Google developer tools.",
+    role: "Campus Leader (Socialization Team)", // Diubah karena bukan GSA lagi agar tetap profesional
+    company: "Developer Community",
+    date: "Sep 2025 - Feb 2026", 
+    desc: "Organized technical workshops and 'Gemini AI Socialization' events to bridge the gap between emerging Google technologies and university students.",
     type: "Leadership"
   },
   {
@@ -16,15 +34,15 @@ const experienceData = [
     role: "Flutter Developer & Project Manager",
     company: "Rekaloka (Project)",
     date: "Nov 2025 - Des 2025",
-    desc: "Leading the development of a gamified cultural heritage app. Engineered AI-powered features (Gen AI) to reconstruct 2D prompts into 3D models and implemented LBS for mission validation.",
+    desc: "Leading the development of a gamified cultural heritage app. Engineered AI-powered features to reconstruct 2D prompts into 3D models and implemented LBS for mission validation.",
     type: "Work"
   },
-{
+  {
     id: 3,
     role: "Flutter Developer & Project Manager", 
     company: "GreenPoint (Project)",
     date: "Nov 2024 - Jan 2025", 
-    desc: "Created a digital waste bank ecosystem using Flutter & Laravel to incentivize recycling. Integrated QR Code scanning for seamless transactions and Google Maps API for location services.",
+    desc: "Created a digital waste bank ecosystem using Flutter & Laravel to incentivize recycling. Integrated QR Code scanning and Google Maps API for location services.",
     type: "Work"
   },
   {
@@ -36,7 +54,6 @@ const experienceData = [
     type: "Organization"
   }
 ];
-
 const educationData = [
   {
     id: 1,

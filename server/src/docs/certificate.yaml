@@ -1,8 +1,28 @@
-/certificates:
+/api/certificates:
+  get:
+    tags: [Certificates]
+    summary: Ambil semua daftar sertifikat
+    responses:
+      200:
+        description: Berhasil
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+                  example: true
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Certificate'
+
   post:
     tags: [Certificates]
     summary: Tambah sertifikat & upload PDF
     requestBody:
+      required: true
       content:
         multipart/form-data:
           schema:
@@ -12,19 +32,44 @@
               issuer: { type: string }
               year: { type: string }
               pdf_file: { type: string, format: binary }
+    responses:
+      201:
+        description: Created
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: { type: boolean, example: true }
+                data: { $ref: '#/components/schemas/Certificate' }
 
-/certificates/{id}:
+/api/certificates/{id}:
   get:
     tags: [Certificates]
-    summary: Ambil detail sertifikat berdasarkan ID
+    summary: Detail sertifikat
     parameters:
       - in: path
         name: id
         required: true
-        schema:
-          type: integer
+        schema: { type: integer }
     responses:
       200:
-        description: Berhasil mengambil detail
-      404:
-        description: Sertifikat tidak ditemukan
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status: { type: boolean, example: true }
+                data: { $ref: '#/components/schemas/Certificate' }
+
+components:
+  schemas:
+    Certificate:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        issuer: { type: string }
+        year: { type: string }
+        pdf_url: { type: string }
+        created_at: { type: string, format: date-time }
