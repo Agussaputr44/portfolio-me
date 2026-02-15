@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Project, GithubData, Certificate, ApiResponse } from '../types';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://portfolio-me-git-develop-agusptr44s-projects.vercel.app/',
+  baseURL: import.meta.env.VITE_API_URL || 'https://portfolio-me-git-develop-agusptr44s-projects.vercel.app/api',
 });
 
 // GET Projects
