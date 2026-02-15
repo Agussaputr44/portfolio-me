@@ -6,6 +6,20 @@ import { fetchProjects } from '../services/api';
 import { Project } from '../types';
 
 // ==========================================
+// UTILS: DYNAMIC VARIANTS
+// ==========================================
+const getVariant = (id: number) => {
+  const variants = [
+    { color: "from-purple-600 to-indigo-600", bg: "1e1b4b", text: "a855f7" }, 
+    { color: "from-cyan-500 to-blue-600", bg: "083344", text: "22d3ee" },    
+    { color: "from-rose-500 to-pink-600", bg: "450a0a", text: "fb7185" },    
+    { color: "from-amber-500 to-orange-600", bg: "451a03", text: "fbbf24" }, 
+    { color: "from-emerald-500 to-teal-600", bg: "022c22", text: "34d399" }, 
+  ];
+  return variants[id % variants.length];
+};
+
+// ==========================================
 // 1. SUB-COMPONENT: PROJECT CARD
 // ==========================================
 interface CardProps {
@@ -50,12 +64,27 @@ const ProjectCard = ({ project, index, onClick }: CardProps) => {
         </p>
         
         <div className="flex flex-wrap gap-2">
-          {project.tech_stack.slice(0, 3).map((tech) => (
-            <span key={tech} className="px-3 py-1 text-[10px] font-medium rounded-full border bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-500/20 dark:text-purple-200 dark:border-purple-500/30">
-              {tech}
+          {project.tech_stack.slice(0, 3).map((tech, i) => {
+            const variant = getVariant(i);
+            return (
+              <span 
+                key={tech} 
+                style={{ 
+                  backgroundColor: `#${variant.bg}15`, // 15 = low opacity hex
+                  color: `#${variant.text}`,
+                  borderColor: `#${variant.text}30`
+                }}
+                className="px-3 py-1 text-[10px] font-bold rounded-full border"
+              >
+                {tech}
+              </span>
+            );
+          })}
+          {project.tech_stack.length > 3 && (
+            <span className="text-[10px] text-slate-400 self-center">
+              +{project.tech_stack.length - 3} more
             </span>
-          ))}
-          {project.tech_stack.length > 3 && <span className="text-[10px] text-slate-400">+{project.tech_stack.length - 3} more</span>}
+          )}
         </div>
       </div>
     </motion.div>
@@ -63,7 +92,7 @@ const ProjectCard = ({ project, index, onClick }: CardProps) => {
 };
 
 // ==========================================
-// 2. SUB-COMPONENT: PROJECT MODAL (FULL VIEW)
+// 2. SUB-COMPONENT: PROJECT MODAL
 // ==========================================
 const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => void }) => {
   return (
@@ -90,19 +119,33 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
 
         <div className="w-full md:w-1/2 p-8 md:p-12 overflow-y-auto">
           <h2 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white leading-tight">{project.title}</h2>
+          
           <div className="flex flex-wrap gap-2 mb-6">
-            {project.tech_stack.map((tech) => (
-              <span key={tech} className="px-3 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300">
-                {tech}
-              </span>
-            ))}
+            {project.tech_stack.map((tech, i) => {
+              const variant = getVariant(i);
+              return (
+                <span 
+                  key={tech} 
+                  style={{ 
+                    backgroundColor: `#${variant.bg}`, 
+                    color: `#${variant.text}`,
+                    borderColor: `#${variant.text}40`
+                  }}
+                  className="px-3 py-1 text-xs font-bold rounded-full border"
+                >
+                  {tech}
+                </span>
+              );
+            })}
           </div>
+
           <div className="prose prose-slate dark:prose-invert max-w-none">
-            <h4 className="text-slate-400 uppercase text-xs tracking-widest mb-2">Project Overview</h4>
+            <h4 className="text-slate-400 uppercase text-xs tracking-widest mb-2 font-semibold">Project Overview</h4>
             <p className="text-slate-600 dark:text-gray-300 leading-relaxed text-lg whitespace-pre-line font-light">
               {project.description}
             </p>
           </div>
+
           <div className="mt-10 flex flex-wrap gap-4">
             {project.repo_url && (
               <a href={project.repo_url} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 dark:bg-white/10 hover:bg-slate-200 dark:hover:bg-white/20 transition-all font-medium">
@@ -132,7 +175,7 @@ export const Projects = () => {
 
   if (isLoading) {
     return (
-      <section id="projects" className="py-24 px-4">
+      <section id="projects" className="py-24 px-4 max-w-7xl mx-auto">
         <HeaderSection count={0} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[1, 2, 3].map((i) => (
@@ -143,7 +186,7 @@ export const Projects = () => {
     );
   }
 
-  if (isError) return <div className="text-center py-24 text-red-500">Gagal memuat data project.</div>;
+  if (isError) return <div className="text-center py-24 text-red-500 font-medium">Gagal memuat data project.</div>;
 
   return (
     <section id="projects" className="py-24 px-4 scroll-mt-20 max-w-7xl mx-auto">
