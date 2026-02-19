@@ -14,6 +14,9 @@ const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.
 const Projects = lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
 const Analytics = lazy(() => import('./components/Analytics').then(m => ({ default: m.Analytics })));
 
+// URL Supabase Bucket kamu
+const CV_URL = "https://orocqceqqsxowfrlorad.supabase.co/storage/v1/object/public/certificates/pdfs/cv_agus_saputra.pdf";
+
 const LoadingSection = () => (
   <div className="py-20 flex justify-center items-center opacity-50">
     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900 dark:border-white"></div>
@@ -32,10 +35,12 @@ function App() {
   
   const [greeting] = useState(getGreeting());
 
+  // Fungsi untuk trigger download via Keyboard Shortcut ('D')
   const handleDownloadCV = useCallback(() => {
     const link = document.createElement('a');
-    link.href = '/cv_agus_saputra.pdf';
+    link.href = CV_URL;
     link.download = 'CV_Agus_Saputra.pdf';
+    link.target = '_blank';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -125,20 +130,21 @@ function App() {
         {/* === HERO SECTION === */}
         <section id="home" className="min-h-screen flex flex-col justify-center items-center text-center pt-20 relative">
           
-        <motion.div
-  initial={{ opacity: 0, y: -20 }}
-  animate={{ opacity: 1, y: 0 }}
-  className="group relative inline-flex items-center gap-3 mb-8 px-6 py-2 rounded-2xl border bg-white/40 border-cyan-200/50 text-slate-700 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-200 backdrop-blur-xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-500 overflow-hidden"
->
-  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-  <span className="relative flex h-3 w-3">
-    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-    <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-600 dark:bg-cyan-400"></span>
-  </span>
-  <span className="relative text-[10px] md:text-xs font-mono tracking-[0.2em]">
-    {greeting}, I'm Agus
-  </span>
-</motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="group relative inline-flex items-center gap-3 mb-8 px-6 py-2 rounded-2xl border bg-white/40 border-cyan-200/50 text-slate-700 dark:bg-cyan-500/10 dark:border-cyan-500/20 dark:text-cyan-200 backdrop-blur-xl shadow-xl hover:shadow-cyan-500/20 transition-all duration-500 overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-600 dark:bg-cyan-400"></span>
+            </span>
+            <span className="relative text-[10px] md:text-xs font-mono tracking-[0.2em]">
+              {greeting}, I'm Agus
+            </span>
+          </motion.div>
+
           <motion.h1
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -184,15 +190,19 @@ function App() {
             transition={{ delay: 0.7 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <motion.button
+            {/* Download Button menggunakan tag <a> agar lebih optimal */}
+            <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={handleDownloadCV}
-              className="group relative flex items-center gap-3 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-purple-500/20 bg-slate-900 text-white dark:bg-white dark:text-black"
+              href={CV_URL}
+              download="CV_Agus_Saputra.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-center gap-3 px-8 py-3 rounded-full font-bold transition-all shadow-lg hover:shadow-purple-500/20 bg-slate-900 text-white dark:bg-white dark:text-black cursor-pointer"
             >
               <Download size={20} className="group-hover:-translate-y-1 transition-transform" />
               <span>Download CV</span>
-            </motion.button>
+            </motion.a>
 
             <motion.button
               whileHover={{ scale: 1.05 }}
