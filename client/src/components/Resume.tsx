@@ -30,10 +30,10 @@ const experienceData = [
   },
   {
     id: 1,
-    role: "Campus Leader (Socialization Team)", 
-    company: "Developer Community",
-    date: "Sep 2025 - Feb 2026", 
-    desc: "Organized technical workshops and 'Gemini AI Socialization' events to bridge the gap between emerging Google technologies and university students.",
+    role: "Google Student Ambassador",
+    company: "Google",
+    date: "Aug 2025 - Present",
+    desc: "Organized and led 'Gemini AI Socialization' events, demonstrating practical use cases of Generative AI for academic productivity. Designed creative campaigns to promote Google developer tools and was selected as a campus leader bridging Google technologies and university students.",
     type: "Leadership"
   },
   {
@@ -42,6 +42,22 @@ const experienceData = [
     company: "Rekaloka (Project)",
     date: "Nov 2025 - Des 2025",
     desc: "Leading the development of a gamified cultural heritage app. Engineered AI-powered features to reconstruct 2D prompts into 3D models and implemented LBS for mission validation.",
+    type: "Work"
+  },
+  {
+    id: 8,
+    role: "Full Stack Mobile Developer",
+    company: "Siap PA (Project)",
+    date: "May 2025 - Jun 2025",
+    desc: "Built a secure reporting platform for violence against women and children using Flutter (mobile) and Laravel (backend), with multimedia evidence upload and a real-time case monitoring dashboard.",
+    type: "Work"
+  },
+  {
+    id: 9,
+    role: "Android Developer",
+    company: "My Presensi (Project)",
+    date: "Feb 2025 - Apr 2025",
+    desc: "Designed a secure mobile attendance system using Location-Based Services (LBS) and a custom Fake GPS Detection algorithm to prevent location spoofing during check-ins.",
     type: "Work"
   },
   {
