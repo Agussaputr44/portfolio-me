@@ -14,8 +14,9 @@ const Footer = lazy(() => import('./components/Footer').then(m => ({ default: m.
 const Projects = lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
 const Analytics = lazy(() => import('./components/Analytics').then(m => ({ default: m.Analytics })));
 
-// URL Supabase Bucket kamu
-const CV_URL = "https://orocqceqqsxowfrlorad.supabase.co/storage/v1/object/public/certificates/pdfs/cv_agus_saputra.pdf";
+// CV file bundled directly with the static site (client/public/cv_agus_saputra.pdf)
+// — previously pointed at a Supabase Storage URL, which broke when the cloud project went down.
+const CV_URL = "/cv_agus_saputra.pdf";
 
 const LoadingSection = () => (
   <div className="py-20 flex justify-center items-center opacity-50">

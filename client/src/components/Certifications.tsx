@@ -1,33 +1,22 @@
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Award, ExternalLink, BadgeCheck, Loader2 } from "lucide-react";
-import { fetchCertificates } from "../services/api";
+import { Award, ExternalLink, BadgeCheck } from "lucide-react";
 import { Certificate } from "../types";
 
+// Static list — sourced from CV "CERTIFICATIONS & ACHIEVEMENTS" section
+// (previously fetched from Supabase; now static since the backend is offline)
+const certsData: Certificate[] = [
+  { id: 1, title: "Certified Junior Mobile Programmer", issuer: "BNSP (National Professional Certification Board)", year: "2025", created_at: "2025-01-01" },
+  { id: 2, title: "Flutter Developer Expert (Beginner to Expert Learning Path)", issuer: "Dicoding Indonesia", year: "2025", created_at: "2025-01-01" },
+  { id: 3, title: "Cloud Practitioner Essentials (AWS)", issuer: "Dicoding Indonesia", year: "2025", created_at: "2025-01-01" },
+  { id: 4, title: "SOLID Programming Principles", issuer: "Dicoding Indonesia", year: "2025", created_at: "2025-01-01" },
+  { id: 5, title: "Back-End Application Development", issuer: "Dicoding Indonesia", year: "2025", created_at: "2025-01-01" },
+  { id: 6, title: "Merdeka Student Exchange Program, Batch 4", issuer: "Kampus Merdeka", year: "2024", created_at: "2024-01-01" },
+  { id: 7, title: "2nd Best Winner — ICIF 2025", issuer: "Politeknik Negeri Bengkalis", year: "2025", created_at: "2025-01-01" },
+  { id: 8, title: "Favorite Junior Developer — ICIF 2024", issuer: "Politeknik Negeri Bengkalis", year: "2024", created_at: "2024-01-01" },
+];
+
 export const Certifications = () => {
-  const [certs, setCerts] = useState<Certificate[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const getCerts = async () => {
-      try {
-        const data = await fetchCertificates();
-        const sortedData = data.sort((a, b) => parseInt(b.year) - parseInt(a.year));
-        setCerts(sortedData);
-      } catch (error) {
-        console.error("Failed to fetch certificates:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    getCerts();
-  }, []);
-
-  // fix import react never used
-
-
-
-
+  const certs = [...certsData].sort((a, b) => parseInt(b.year) - parseInt(a.year));
   const getVariant = (id: number) => {
     const variants = [
       { color: "from-purple-600 to-indigo-600", bg: "1e1b4b", text: "a855f7" }, 
@@ -60,12 +49,7 @@ export const Certifications = () => {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-10 h-10 text-purple-500 animate-spin mb-4" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {certs.map((cert, idx) => {
               const variant = getVariant(idx);
               const placeholderText = encodeURIComponent(cert.title);
@@ -91,17 +75,19 @@ export const Certifications = () => {
                       className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
                     />
 
-                    {/* Tombol Floating */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
-                      <a
-                        href={cert.pdf_url || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-6 py-2 bg-white text-black rounded-lg font-bold text-sm shadow-2xl transform translate-y-2 group-hover:translate-y-0 transition-all"
-                      >
-                        <ExternalLink size={16} /> Show Credential
-                      </a>
-                    </div>
+                    {/* Tombol Floating — hanya tampil jika ada link kredensial */}
+                    {cert.pdf_url && (
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 z-20">
+                        <a
+                          href={cert.pdf_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 px-6 py-2 bg-white text-black rounded-lg font-bold text-sm shadow-2xl transform translate-y-2 group-hover:translate-y-0 transition-all"
+                        >
+                          <ExternalLink size={16} /> Show Credential
+                        </a>
+                      </div>
+                    )}
                   </div>
 
                   {/* Konten Text */}
@@ -123,8 +109,7 @@ export const Certifications = () => {
                 </motion.div>
               );
             })}
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );

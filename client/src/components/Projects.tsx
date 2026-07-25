@@ -1,8 +1,6 @@
 import { Suspense, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, ExternalLink, X, Layout } from 'lucide-react';
-import { fetchProjects } from '../services/api';
 import { Project } from '../types';
 
 // ==========================================
@@ -18,6 +16,50 @@ const getVariant = (id: number) => {
   ];
   return variants[id % variants.length];
 };
+
+// ==========================================
+// STATIC DATA — sourced from CV "KEY PROJECT" section
+// (previously fetched from Supabase; now static since the backend is offline)
+// ==========================================
+const placeholderImg = (title: string, idx: number) => {
+  const v = getVariant(idx);
+  return `https://placehold.co/600x400/${v.bg}/${v.text}?text=${encodeURIComponent(title)}&font=playfair`;
+};
+
+const projectsData: Project[] = [
+  {
+    id: '1',
+    title: 'Rekaloka',
+    description:
+      'A gamified cultural heritage exploration app built with Flutter, integrating Location-Based Services (LBS) to surface cultural content based on user proximity. Includes a Generative AI feature that reconstructs 2D prompts into 3D cultural object models via a chat interface, plus a mission validation system using geolocation and camera access to verify visits to cultural sites.',
+    tech_stack: ['Flutter', 'Generative AI', 'LBS', 'Firebase'],
+    image_url: placeholderImg('Rekaloka', 0),
+  },
+  {
+    id: '2',
+    title: 'Siap PA',
+    description:
+      'A secure reporting platform for violence against women and children, built with Flutter (mobile) and Laravel (backend). Supports multimedia evidence uploads (photos & videos) via API, real-time report status tracking, and a monitoring dashboard for authorities to manage cases efficiently.',
+    tech_stack: ['Flutter', 'Laravel', 'REST API'],
+    image_url: placeholderImg('Siap PA', 1),
+  },
+  {
+    id: '3',
+    title: 'My Presensi',
+    description:
+      'A secure mobile attendance system using Location-Based Services (LBS) for precise employee tracking. Features a custom Fake GPS Detection algorithm to prevent location spoofing and ensure data integrity during check-ins, optimized for reliability on low-bandwidth Android devices.',
+    tech_stack: ['Flutter', 'Android', 'LBS'],
+    image_url: placeholderImg('My Presensi', 2),
+  },
+  {
+    id: '4',
+    title: 'GreenPoint',
+    description:
+      'A digital waste bank application built with Flutter and Laravel that incentivizes recycling through a reward point system. Integrates QR Code scanning for transaction recording, Google Maps API for locating nearby waste banks, Google Sign-In authentication, and real-time push notifications.',
+    tech_stack: ['Flutter', 'Laravel', 'Google Maps API'],
+    image_url: placeholderImg('GreenPoint', 3),
+  },
+];
 
 // ==========================================
 // 1. SUB-COMPONENT: PROJECT CARD
@@ -167,33 +209,14 @@ const ProjectModal = ({ project, onClose }: { project: Project; onClose: () => v
 // ==========================================
 export const Projects = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-
-  const { data: projects, isLoading, isError } = useQuery({
-    queryKey: ['projects'],
-    queryFn: fetchProjects,
-  });
-
-  if (isLoading) {
-    return (
-      <section id="projects" className="py-24 px-4 max-w-7xl mx-auto">
-        <HeaderSection count={0} />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-96 bg-gray-100 dark:bg-white/5 rounded-3xl animate-pulse" />
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  if (isError) return <div className="text-center py-24 text-red-500 font-medium">Gagal memuat data project.</div>;
+  const projects = projectsData;
 
   return (
     <section id="projects" className="py-24 px-4 scroll-mt-20 max-w-7xl mx-auto">
-      <HeaderSection count={projects?.length || 0} />
+      <HeaderSection count={projects.length} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects?.map((project: Project, idx: number) => (
+        {projects.map((project: Project, idx: number) => (
           <Suspense key={project.id || idx} fallback={<div className="h-96 bg-gray-100 dark:bg-white/5 rounded-3xl animate-pulse"/>}>
             <ProjectCard 
               project={project} 

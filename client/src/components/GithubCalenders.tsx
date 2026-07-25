@@ -1,58 +1,59 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchGithub } from '../services/api';
+// Static replacement — previously called our own backend (which called the
+// GitHub GraphQL API with a server-side token). Since that backend is offline,
+// and a GitHub token can't safely live in frontend code, this now renders a
+// public, unauthenticated contribution chart image instead. No API calls.
+
+const GITHUB_USERNAME = "Agussaputr44";
+const CHART_COLOR = "8b5cf6"; // purple, matches the site's accent color
+const CHART_URL = `https://ghchart.rshah.org/${CHART_COLOR}/${GITHUB_USERNAME}`;
 
 export const GithubCalendar = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['github'],
-    queryFn: fetchGithub,
-  });
-
-  if (isLoading) return <div className="text-slate-500 dark:text-gray-500 animate-pulse text-sm">Loading data...</div>;
-  if (isError) return <div className="text-red-500 dark:text-red-400 text-sm">Gagal memuat data.</div>;
-
   return (
-    // CARD CONTAINER:
-    // Light: bg-white/50 border-slate-200 shadow-sm
-    // Dark: bg-white/5 border-white/10
     <div className="w-full p-6 rounded-2xl border transition-colors duration-300
                     bg-white/50 border-slate-200 
                     dark:bg-white/5 dark:border-white/10 
                     backdrop-blur-md hover:border-purple-300 dark:hover:border-white/20">
-      
+
       <div className="flex justify-between items-end mb-6">
         <h3 className="text-xl font-bold text-slate-900 dark:text-white">GitHub Activity</h3>
-        
-        {/* BADGE COMMITS: */}
-        {/* Light: bg-cyan-100 text-cyan-700 */}
-        {/* Dark: bg-cyan-900/30 text-cyan-300 */}
-        <span className="font-mono text-xs px-3 py-1 rounded-full border transition-colors duration-300
-                         bg-cyan-100 text-cyan-700 border-cyan-200
-                         dark:bg-cyan-900/30 dark:text-cyan-300 dark:border-cyan-500/30">
-          {data?.total} commits / year
-        </span>
+        <a
+          href={`https://github.com/${GITHUB_USERNAME}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-mono text-xs px-3 py-1 rounded-full border transition-colors duration-300
+                     bg-cyan-100 text-cyan-700 border-cyan-200
+                     dark:bg-cyan-900/30 dark:text-cyan-300 dark:border-cyan-500/30
+                     hover:opacity-80"
+        >
+          @{GITHUB_USERNAME}
+        </a>
       </div>
 
-      <div className="flex flex-wrap gap-1 justify-center md:justify-start">
-        {data?.contributions.map((day, i) => (
-          <div
-            key={i}
-            className="w-3 h-3 rounded-sm transition-all hover:scale-125 hover:shadow-lg"
-            style={{ 
-              // Logika warna contribution (disesuaikan sedikit untuk light mode jika perlu, tapi default github color biasanya aman)
-              backgroundColor: day.contributionCount > 0 
-                ? day.color 
-                : 'var(--contribution-empty)' // Kita akali pakai CSS variable atau logic di bawah
-            }}
-            // Trik untuk warna empty cell:
-            // Light mode: abu-abu sangat muda (slate-200)
-            // Dark mode: transparent putih (white/5)
+      <div className="overflow-x-auto">
+        <img
+          src={CHART_URL}
+          alt={`${GITHUB_USERNAME}'s GitHub contribution chart`}
+          className="min-w-[600px] w-full rounded-lg"
+          loading="lazy"
+          onError={(e) => {
+            // If the third-party chart service is ever unavailable, fall back
+            // to a simple text link instead of a broken image icon.
+            (e.currentTarget as HTMLImageElement).style.display = "none";
+            const fallback = document.getElementById("gh-chart-fallback");
+            if (fallback) fallback.style.display = "block";
+          }}
+        />
+        <p id="gh-chart-fallback" style={{ display: "none" }} className="text-sm text-slate-500 dark:text-gray-500">
+          Couldn't load the contribution chart —{" "}
+          <a
+            href={`https://github.com/${GITHUB_USERNAME}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-purple-500"
           >
-             {/* Karena style inline sulit pakai tailwind class dynamic, kita inject class kosongnya di sini */}
-             <div className={`w-full h-full rounded-sm ${day.contributionCount === 0 ? 'bg-slate-200 dark:bg-white/5' : ''}`} 
-                  style={{ backgroundColor: day.contributionCount > 0 ? day.color : undefined }} 
-             />
-          </div>
-        ))}
+            view it directly on GitHub
+          </a>.
+        </p>
       </div>
     </div>
   );

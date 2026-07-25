@@ -3,6 +3,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Briefcase, GraduationCap, Calendar, MapPin, Building2 } from "lucide-react";
 
 const experienceData = [
+  {
+    id: 7,
+    role: "Mobile Developer Intern",
+    company: "Assist.id",
+    date: "Mar 2026 - Jul 2026",
+    desc: "Architected an HR & Attendance app from scratch using Flutter and Clean Architecture. Implemented security hardening (jailbreak detection), debounced API search with RxDart, a multi-role Room Booking system, a BLoC-based Daily Report module, and Excel (.xlsx) export with custom styling.",
+    type: "Internship"
+  },
   // PENGALAMAN PENELITIAN (Berdasarkan Proyek YOLOv8 kamu)
   {
     id: 5,
